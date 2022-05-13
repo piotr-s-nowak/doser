@@ -2,6 +2,7 @@ package edu.iis.mto.testreactor.doser;
 
 
 import edu.iis.mto.testreactor.doser.infuser.Infuser;
+import edu.iis.mto.testreactor.doser.infuser.InfuserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,7 +54,9 @@ class MedicineDoserTest {
 
     @Test
     void catchInsufficientMedicineExceptionWhenRecipeNumberGreaterThanMedicinePackageCapacity() {
-
+        medicineDoser.add(medicinePackage);
+        receipe = new RecipeBuilder().withNumber(25).build();
+        assertThrows(InsufficientMedicineException.class, () -> medicineDoser.dose(receipe));
     }
 
     @Test
@@ -63,8 +66,12 @@ class MedicineDoserTest {
     }
 
     @Test
-    void shouldInvokeInfuserDispenseSpecifiedInRecipeNumberOfTimes() {
-
+    void shouldInvokeInfuserDispenseSpecifiedInRecipeNumberOfTimes() throws InfuserException {
+        int dummy_number = 4;
+        receipe = new RecipeBuilder().withNumber(dummy_number).build();
+        medicineDoser.add(medicinePackage);
+        medicineDoser.dose(receipe);
+        verify(infuser, times(4)).dispense(any(MedicinePackage.class), any(Capacity.class));
     }
 
     @Test
