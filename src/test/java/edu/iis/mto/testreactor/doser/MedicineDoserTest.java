@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -76,7 +77,11 @@ class MedicineDoserTest {
 
     @Test
     void doseMethodShouldCatchExceptionAndSetDosingResultToAnError() {
-
+        medicineDoser.add(medicinePackage);
+        medicineDoser.dose(receipe);
+        doThrow(new NullPointerException()).when(clock).wait(any(Period.class));
+        DosingResult result = medicineDoser.dose(receipe);
+        assertEquals(DosingResult.ERROR, result);
     }
 
     @Test
