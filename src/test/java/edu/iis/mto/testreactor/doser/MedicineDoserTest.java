@@ -94,7 +94,12 @@ class MedicineDoserTest {
 
     @Test
     void shouldInvokeClockWaitAfterDosing() {
-
+        int dummyNumber = 10;
+        medicinePackage = new MedicinePackageBuilder().withCapacity(Capacity.of(200, CapacityUnit.MILILITER)).build();
+        receipe = new RecipeBuilder().withNumber(dummyNumber).build();
+        medicineDoser.add(medicinePackage);
+        medicineDoser.dose(receipe);
+        verify(clock, times(10)).wait(any(Period.class));
     }
 
 }
