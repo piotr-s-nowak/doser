@@ -86,7 +86,10 @@ class MedicineDoserTest {
 
     @Test
     void shouldSetDosingResultToSuccessIfMedicineInRecipeWasDosedSuccessfully() {
-
+        medicineDoser.add(medicinePackage);
+        medicineDoser.dose(receipe);
+        DosingResult result = medicineDoser.dose(receipe);
+        assertEquals(DosingResult.SUCCESS, result);
     }
 
     @Test
