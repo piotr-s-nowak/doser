@@ -51,7 +51,8 @@ class MedicineDoserTest {
 
     @Test
     void doseReceipeIsNullShouldThrowNPE() {
-
+        medicineDoser.add(medicinePackage);
+        assertThrows(NullPointerException.class, () -> medicineDoser.dose(null));
     }
 
     @Test
