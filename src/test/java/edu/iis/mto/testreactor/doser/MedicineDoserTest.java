@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MedicineDoserTest {
@@ -41,7 +42,13 @@ class MedicineDoserTest {
 
     @Test
     void useMethodDoseShouldInvokeLoggingMethods() {
-
+        medicineDoser.add(medicinePackage);
+        medicineDoser.dose(receipe);
+        verify(dosageLog, times(1)).logStart();
+        verify(dosageLog, times(1)).logEnd();
+        verify(dosageLog, times(receipe.getNumber())).logStartDose(any(Medicine.class), any(Dose.class));
+        verify(dosageLog, times(receipe.getNumber())).logEndDose(any(Medicine.class), any(Dose.class));
+        verifyNoMoreInteractions(dosageLog);
     }
 
     @Test
